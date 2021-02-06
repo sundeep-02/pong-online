@@ -3,7 +3,6 @@ import random
 import os
 from network import Network
 
-#added hashtag
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 SCR_WIDTH = 900
