@@ -1,6 +1,5 @@
 import socket
 from _thread import *
-import sys
 
 SCR_WIDTH = 900
 SCR_HEIGHT = 600
