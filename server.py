@@ -6,7 +6,7 @@ SCR_HEIGHT = 600
 BG_COLOUR = (30, 30, 40)
 PLAYER_COLOR = (154, 223, 252)
 
-server_id = "192.168.1.3"
+server_id = "192.168.1.4"
 port = 5555
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
