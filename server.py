@@ -1,7 +1,6 @@
 import socket
 from _thread import *
 import sys
-#test
 
 SCR_WIDTH = 900
 SCR_HEIGHT = 600
