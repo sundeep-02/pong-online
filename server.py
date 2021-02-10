@@ -17,12 +17,12 @@ print("Server started. Waiting for Connection...")
 
 def readPos(str):
     str = str.split(",")
-    return int(str[0]), int(str[1])
+    return int(str[0]), int(str[1]), int(str[2]), int(str[3])
 
 def makePos(tup):
-    return str(tup[0]) + "," + str(tup[1])
+    return str(tup[0]) + "," + str(tup[1]) + "," + str(tup[2]) + "," + str(tup[3])
 
-pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40), (10, SCR_HEIGHT//2 - 40)]
+pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40, 4, 4), (10, SCR_HEIGHT//2 - 40, 4, 4)]
 
 def client_thread(conn, playerNo):
     conn.sendall(str.encode(makePos(pos[playerNo])))
@@ -41,9 +41,6 @@ def client_thread(conn, playerNo):
 
                 else:
                     reply = pos[1]
-                    
-                #print("Received: ", data)
-                #print("Sending: ", reply)
 
             conn.sendall(str.encode(makePos(reply)))
 
@@ -54,10 +51,16 @@ def client_thread(conn, playerNo):
     conn.close()
 
 currentPlayer = 0
+lst = []
 
 while True:
     conn, addr = server.accept()
     print("Connected to: ", addr)
+    lst.append(conn)
 
-    start_new_thread(client_thread, (conn, currentPlayer))
-    currentPlayer += 1
+    if len(lst) > 1:
+        conn_1 = lst[0]
+        conn_2 = lst[1]
+        start_new_thread(client_thread, (conn_1, currentPlayer))
+        currentPlayer += 1
+        start_new_thread(client_thread, (conn_2, currentPlayer))

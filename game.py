@@ -3,7 +3,7 @@ import random
 import os
 from network import Network
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
+#os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 SCR_WIDTH = 900
 SCR_HEIGHT = 600
@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-def window(screen, p1, p2, b):#, p1_score, p2_score):
+def window(screen, p1, p2, b):
     screen.fill(BG_COLOUR)
     pygame.draw.aaline(screen, (0,0,0), (SCR_WIDTH//2, 0), (SCR_WIDTH//2, SCR_HEIGHT))
     p1.draw(screen)
@@ -57,13 +57,13 @@ class Player():
         self.rect = (self.x, self.y, self.width, self.height)
 
 class Ball():
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, x_vel, y_vel):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.x_vel = 4 * random.choice((-1, 1))
-        self.y_vel = 4 * random.choice((-1, 1))
+        self.x_vel = x_vel
+        self.y_vel = y_vel
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
     
     def draw(self, screen):
@@ -98,37 +98,35 @@ class Ball():
     def ball_start(self):
         self.x = SCR_WIDTH//2 - 8
         self.y = SCR_HEIGHT//2 - 8
-        self.x_vel = 4 * random.choice((-1, 1))
-        self.y_vel = 4 * random.choice((-1, 1))
-        #pygame.time.delay(2000)
+        self.x_vel = 4
+        self.y_vel = 4
 
     def update(self):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
 def readPos(str):
     str = str.split(",")
-    return int(str[0]), int(str[1])
+    return int(str[0]), int(str[1]), int(str[2]), int(str[3])
 
 def makePos(tup):
-    return str(tup[0]) + "," + str(tup[1])
+    return str(tup[0]) + "," + str(tup[1]) + "," + str(tup[2]) + "," + str(tup[3])
 
 n = Network()
-startPos = readPos(n.getPos())
+start_pos_vel = readPos(n.getPos())
 
-p1 = Player(startPos[0], startPos[1], 10, 80, PLAYER_COLOR)
+p1 = Player(start_pos_vel[0], start_pos_vel[1], 10, 80, PLAYER_COLOR)
 p2 = Player(0, 0, 10, 80, PLAYER_COLOR)
-b = Ball(SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8, 16, 16)
+b = Ball(SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8, 16, 16, start_pos_vel[2], start_pos_vel[3])
 
 run = True
 while run:
-    #p1_score = font.render(f"{p1.score}", True, (255, 255, 255))
-    #p2_score = font.render(f"{p2.score}", True, (255, 255, 255))
-
-    p2Pos = readPos(n.send_and_recv(makePos((p1.x, p1.y))))
-    p2.x = p2Pos[0]
-    p2.y = p2Pos[1]
+    pos_vel = readPos(n.send_and_recv(makePos((p1.x, p1.y, b.x_vel, b.y_vel))))
+    p2.x = pos_vel[0]
+    p2.y = pos_vel[1]
+    b.x_vel = pos_vel[2]
+    b.y_vel = pos_vel[3]
     
-    window(screen, p1, p2, b)#, p1_score, p2_score)
+    window(screen, p1, p2, b)
     p1.move()
     p2.update()
     b.move(p1, p2)
