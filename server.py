@@ -6,7 +6,7 @@ SCR_HEIGHT = 600
 BG_COLOUR = (30, 30, 40)
 PLAYER_COLOR = (154, 223, 252)
 
-server_id = "192.168.1.4"
+server_id = "192.168.1.7"
 port = 5555
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -22,10 +22,11 @@ def readPos(str):
 def makePos(tup):
     return str(tup[0]) + "," + str(tup[1]) + "," + str(tup[2]) + "," + str(tup[3])
 
-pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40, 4, 4), (10, SCR_HEIGHT//2 - 40, 4, 4)]
+pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40, SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8), (10, SCR_HEIGHT//2 - 40, SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8)]
 
 def client_thread(conn, playerNo):
     conn.sendall(str.encode(makePos(pos[playerNo])))
+
     while True:
         try:
             data = readPos(conn.recv(2048).decode())

@@ -26,8 +26,8 @@ def window(screen, p1, p2, b):
     b.draw(screen)
     p1_score = font.render(f"{p1.score}", True, (255, 255, 255))
     p2_score = font.render(f"{p2.score}", True, (255, 255, 255))
-    screen.blit(p1_score, ((SCR_WIDTH // 2) + 5, (SCR_HEIGHT // 2) - 10))
-    screen.blit(p2_score, ((SCR_WIDTH // 2) - 15, (SCR_HEIGHT // 2) - 10))
+    screen.blit(p1_score, ((SCR_WIDTH // 2) + 50, (SCR_HEIGHT // 2) - 10))
+    screen.blit(p2_score, ((SCR_WIDTH // 2) - 50, (SCR_HEIGHT // 2) - 10))
     
 class Player():
     def __init__(self, x, y, width, height, color):
@@ -116,15 +116,15 @@ start_pos_vel = readPos(n.getPos())
 
 p1 = Player(start_pos_vel[0], start_pos_vel[1], 10, 80, PLAYER_COLOR)
 p2 = Player(0, 0, 10, 80, PLAYER_COLOR)
-b = Ball(SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8, 16, 16, start_pos_vel[2], start_pos_vel[3])
+b = Ball(start_pos_vel[2], start_pos_vel[3], 16, 16, 4, 4)
 
 run = True
 while run:
-    pos_vel = readPos(n.send_and_recv(makePos((p1.x, p1.y, b.x_vel, b.y_vel))))
+    pos_vel = readPos(n.send_and_recv(makePos((p1.x, p1.y, b.x, b.y))))
     p2.x = pos_vel[0]
     p2.y = pos_vel[1]
-    b.x_vel = pos_vel[2]
-    b.y_vel = pos_vel[3]
+    b.x = pos_vel[2]
+    b.y = pos_vel[3]
     
     window(screen, p1, p2, b)
     p1.move()
