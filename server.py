@@ -22,7 +22,7 @@ def readPos(str):
 def makePos(tup):
     return str(tup[0]) + "," + str(tup[1]) + "," + str(tup[2]) + "," + str(tup[3])
 
-pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40, SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8), (10, SCR_HEIGHT//2 - 40, SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8)]
+pos = [(SCR_WIDTH-20, SCR_HEIGHT//2 - 40, 4, 4), (10, SCR_HEIGHT//2 - 40, 4, 4)]
 
 def client_thread(conn, playerNo):
     conn.sendall(str.encode(makePos(pos[playerNo])))

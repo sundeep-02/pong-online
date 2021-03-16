@@ -116,15 +116,15 @@ start_pos_vel = readPos(n.getPos())
 
 p1 = Player(start_pos_vel[0], start_pos_vel[1], 10, 80, PLAYER_COLOR)
 p2 = Player(0, 0, 10, 80, PLAYER_COLOR)
-b = Ball(start_pos_vel[2], start_pos_vel[3], 16, 16, 4, 4)
+b = Ball(SCR_WIDTH//2 - 8, SCR_HEIGHT//2 - 8, 16, 16, start_pos_vel[2], start_pos_vel[3])
 
 run = True
 while run:
-    pos_vel = readPos(n.send_and_recv(makePos((p1.x, p1.y, b.x, b.y))))
+    pos_vel = readPos(n.send_and_recv(makePos((p1.x, p1.y, b.x_vel, b.y_vel))))
     p2.x = pos_vel[0]
     p2.y = pos_vel[1]
-    b.x = pos_vel[2]
-    b.y = pos_vel[3]
+    b.x_vel = pos_vel[2]
+    b.y_vel = pos_vel[3]
     
     window(screen, p1, p2, b)
     p1.move()
